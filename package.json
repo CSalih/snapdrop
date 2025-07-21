@@ -1,15 +1,19 @@
 {
-  "name": "snapdrop",
-  "version": "1.0.0",
-  "license": "GPL-3.0-only",
-  "description": "Local file sharing in your browser. Inspired by Apple's AirDrop.",
-  "scripts": {
-    "start": "bun run apps/server/index.js",
-    "dev": "bun --watch apps/server/index.js",
-    "install:server": "cd apps/server && bun install"
-  },
-  "packageManager": "pnpm@10.13.1",
-  "engines": {
-    "bun": ">=1.0.0"
-  }
+	"name": "snapdrop",
+	"version": "1.0.0",
+	"license": "GPL-3.0-only",
+	"description": "Local file sharing in your browser. Inspired by Apple's AirDrop.",
+	"scripts": {
+		"start": "bun run apps/server/index.js",
+		"dev": "bun --watch apps/server/index.js",
+		"install:server": "cd apps/server && bun install"
+	},
+	"packageManager": "pnpm@10.13.1",
+	"engines": {
+		"bun": ">=1.0.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.1.2",
+		"lefthook": "^1.12.2"
+	}
 }
