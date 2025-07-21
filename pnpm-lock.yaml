@@ -33,6 +33,9 @@ importers:
       '@types/bun':
         specifier: ^1.2.19
         version: 1.2.19(@types/react@19.1.8)
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
 packages:
 
@@ -164,6 +167,11 @@ packages:
     resolution: {integrity: sha512-2CeTu5NcmoT9YnqsHTq/TF36MlqlzHzhivGx3DrXHwcff4TdvrkIwUTA56huM3Nlo5ODAF/0hlPzaKLmNHCBnQ==}
     hasBin: true
 
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   ua-parser-js@0.7.40:
     resolution: {integrity: sha512-us1E3K+3jJppDBa3Tl0L3MOJiGhe1C6P0+nIvQAFYbxlMAx0h81eOwLmU57xgqToduDDPx3y5QsdjPfDu+FgOQ==}
     hasBin: true
@@ -289,6 +297,8 @@ snapshots:
       lefthook-openbsd-x64: 1.12.2
       lefthook-windows-arm64: 1.12.2
       lefthook-windows-x64: 1.12.2
+
+  typescript@5.8.3: {}
 
   ua-parser-js@0.7.40: {}
 

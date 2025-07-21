@@ -32,19 +32,19 @@ type EventPublisher = {
 };
 
 export class SnapdropWebSocketServer {
-	private wss: ServerWebSocket = null;
+	private wss: ServerWebSocket | null = null;
 	private readonly rooms: Map<string, Map<string, PeerInfo>>;
 	private readonly peer: PeerInfo;
-	private readonly server: EventPublisher;
+	private readonly eventPublisher: EventPublisher;
 
 	public constructor(
 		rooms: Map<string, Map<string, PeerInfo>>,
 		peer: PeerInfo,
-		server: EventPublisher,
+		eventPublisher: EventPublisher,
 	) {
-		this.rooms = rooms;
 		this.peer = peer;
-		this.server = server;
+		this.rooms = rooms;
+		this.eventPublisher = eventPublisher;
 	}
 
 	public onConnectionOpen(ws: ServerWebSocket) {
@@ -75,7 +75,7 @@ export class SnapdropWebSocketServer {
 
 		switch (message.type) {
 			case "disconnect":
-				this.onConnectionClose();
+				this.wss?.close();
 				break;
 			case "pong":
 				peer.lastBeat = Date.now();
@@ -94,18 +94,16 @@ export class SnapdropWebSocketServer {
 
 	public onConnectionClose() {
 		const peer = this.peer;
-		const roomByIP = this.rooms.get(peer.ip);
-		if (!roomByIP || !roomByIP.get(peer.id)) {
+		const peersByIP = this.rooms.get(peer.ip);
+		if (!peersByIP) {
 			return;
 		}
-		this._cancelKeepAlive(roomByIP.get(peer.id));
+		this._cancelKeepAlive(peer);
 
-		roomByIP.delete(peer.id);
-
-		this.wss.close();
+		peersByIP.delete(peer.id);
 
 		// if room is empty, delete the room
-		if (roomByIP.size <= 0) {
+		if (peersByIP.size <= 0) {
 			this.rooms.delete(peer.ip);
 			return;
 		}
@@ -125,17 +123,11 @@ export class SnapdropWebSocketServer {
 			this.rooms.set(peer.ip, new Map());
 		}
 
-		// notify all other peers in room
-		this._send(getRoomTopicId(peer), {
-			type: "peer-joined",
-			peer: {
-				id: peer.id,
-				name: peer.name,
-				rtcSupported: peer.rtcSupported,
-			},
-		});
-
 		const peersByIP = this.rooms.get(peer.ip);
+		if (peersByIP === undefined) {
+			throw new Error("peersByIP is undefined! This might be a bug.");
+		}
+
 		this._send(getUserTopicId(peer), {
 			type: "peers",
 			peers: Array.from(peersByIP.values()).map((peer) => ({
@@ -148,11 +140,21 @@ export class SnapdropWebSocketServer {
 
 		// add peer to room
 		peersByIP.set(peer.id, peer);
+
+		// notify all other peers in room
+		this._send(getRoomTopicId(peer), {
+			type: "peer-joined",
+			peer: {
+				id: peer.id,
+				name: peer.name,
+				rtcSupported: peer.rtcSupported,
+			},
+		});
 	}
 
 	private _send(topicId: string, message: EventMessage) {
 		const messageJson = JSON.stringify(message);
-		this.server.publish(topicId, messageJson);
+		this.eventPublisher.publish(topicId, messageJson);
 	}
 
 	private _keepAlive() {
@@ -163,7 +165,7 @@ export class SnapdropWebSocketServer {
 			peer.lastBeat = Date.now();
 		}
 		if (Date.now() - peer.lastBeat > 2 * timeout) {
-			this.onConnectionClose();
+			this.wss?.close();
 			return;
 		}
 

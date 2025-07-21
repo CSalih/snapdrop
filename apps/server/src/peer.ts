@@ -7,14 +7,6 @@ import { createUUID, getIPAddress, hashCode } from "./utils";
 
 export const PEER_COOKIE_NAME = "peerid";
 
-export function getPeerId(context: Context) {
-	const peerId = getCookie(context, PEER_COOKIE_NAME);
-	if (peerId) {
-		return peerId;
-	}
-	return createUUID();
-}
-
 export function getPeerName(context: Context, peerId: string) {
 	const userAgent = context.req.header("user-agent") || "";
 	const parser = new UAParser(userAgent);
@@ -72,7 +64,7 @@ export type PeerInfo = {
 
 export function createPeer(context: Context, peerId: string): PeerInfo {
 	const id = peerId;
-	const ip = getIPAddress(context);
+	const ip = getIPAddress(context) ?? "127.0.0.1"; // TODO: Do we want to put them into one room?!
 	const name = getPeerName(context, id);
 
 	return {

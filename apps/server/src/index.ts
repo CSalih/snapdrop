@@ -55,10 +55,13 @@ const wsHandler = upgradeWebSocket((c) => {
 	return {
 		onOpen: (_event, ws) => {
 			const rawWs = ws.raw as ServerWebSocket;
+			// Subscribe to user events immediately
 			rawWs.subscribe(getUserTopicId(peer));
-			rawWs.subscribe(getRoomTopicId(peer));
 
 			snapdropWS.onConnectionOpen(rawWs);
+
+			// Subscribe to room after connection setup to avoid emitting peer-joined
+			rawWs.subscribe(getRoomTopicId(peer));
 		},
 		onMessage(event) {
 			if (typeof event.data !== "string") {

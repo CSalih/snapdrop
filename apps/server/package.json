@@ -5,8 +5,8 @@
 	"main": "src/index.js",
 	"type": "module",
 	"scripts": {
-		"start": "bun index.js",
-		"dev": "bun --watch index.js"
+		"start": " bun run src/index.ts",
+		"dev": " bun --watch src/index.ts"
 	},
 	"author": "",
 	"license": "ISC",
@@ -17,6 +17,7 @@
 		"ws": "^8.18.3"
 	},
 	"devDependencies": {
+		"typescript": "^5.8.3",
 		"@types/bun": "^1.2.19"
 	}
 }
