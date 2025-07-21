@@ -1,0 +1,22 @@
+{
+	"name": "snapdrop-server",
+	"version": "1.0.0",
+	"description": "Snapdrop server using Hono and Bun",
+	"main": "src/index.js",
+	"type": "module",
+	"scripts": {
+		"start": "bun index.js",
+		"dev": "bun --watch index.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"hono": "^4.0.0",
+		"ua-parser-js": "^0.7.24",
+		"unique-names-generator": "^4.3.0",
+		"ws": "^8.18.3"
+	},
+	"devDependencies": {
+		"@types/bun": "^1.2.19"
+	}
+}

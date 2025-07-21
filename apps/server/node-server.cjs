@@ -1,14 +1,14 @@
 var process = require('process')
 // Handle SIGINT
 process.on('SIGINT', () => {
-  console.info("SIGINT Received, exiting...")
-  process.exit(0)
+    console.info("SIGINT Received, exiting...")
+    process.exit(0)
 })
 
 // Handle SIGTERM
 process.on('SIGTERM', () => {
-  console.info("SIGTERM Received, exiting...")
-  process.exit(0)
+    console.info("SIGTERM Received, exiting...")
+    process.exit(0)
 })
 
 const parser = require('ua-parser-js');
@@ -50,7 +50,7 @@ class SnapdropServer {
     }
 
     _onMessage(sender, message) {
-        // Try to parse message 
+        // Try to parse message
         try {
             message = JSON.parse(message);
         } catch (e) {
@@ -174,7 +174,7 @@ class Peer {
         this._setPeerId(request)
         // is WebRTC supported ?
         this.rtcSupported = request.url.indexOf('webrtc') > -1;
-        // set name 
+        // set name
         this._setName(request);
         // for keepalive
         this.timerId = 0;
@@ -210,11 +210,11 @@ class Peer {
 
 
         let deviceName = '';
-        
+
         if (ua.os && ua.os.name) {
             deviceName = ua.os.name.replace('Mac OS', 'Mac') + ' ';
         }
-        
+
         if (ua.device.model) {
             deviceName += ua.device.model;
         } else {
@@ -278,15 +278,15 @@ class Peer {
 }
 
 Object.defineProperty(String.prototype, 'hashCode', {
-  value: function() {
-    var hash = 0, i, chr;
-    for (i = 0; i < this.length; i++) {
-      chr   = this.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
+    value: function() {
+        var hash = 0, i, chr;
+        for (i = 0; i < this.length; i++) {
+            chr   = this.charCodeAt(i);
+            hash  = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
     }
-    return hash;
-  }
 });
 
-const server = new SnapdropServer(process.env.PORT || 3000);
+const server = new SnapdropServer(process.env.PORT || 3001);
