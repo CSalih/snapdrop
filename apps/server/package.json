@@ -1,15 +1,15 @@
 {
-	"name": "snapdrop-server",
-	"version": "1.0.0",
+	"name": "@csalih/snapdrop-server",
+	"version": "0.1.0",
 	"description": "Snapdrop server using Hono and Bun",
-	"main": "src/index.js",
+	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
 		"start": " bun run src/index.ts",
 		"dev": " bun --watch src/index.ts"
 	},
 	"author": "",
-	"license": "ISC",
+	"license": "GPL-3.0-only",
 	"dependencies": {
 		"hono": "^4.0.0",
 		"ua-parser-js": "^0.7.24",

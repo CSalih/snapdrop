@@ -1,0 +1,12 @@
+.github/
+.idea/
+.vscode/
+node_modules/
+.git/
+dist/
+
+.gitignore
+biome.json
+lefthook.yml
+LICENCE
+*.md
